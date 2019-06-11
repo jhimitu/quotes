@@ -21,8 +21,8 @@ public class AppTest {
     @Test
     public void testQuoteConstructor() {
 
-        Quote quote = new Quote("Reina","says hello");
-        assertEquals("Reina",quote.getAuthor());
+        Quote quote = new Quote("SZA","says hello");
+        assertEquals("SZA",quote.getAuthor());
         assertEquals("says hello",quote.getText());
 
     }
@@ -31,7 +31,7 @@ public class AppTest {
     public void testGetQuotesDataException() throws IOException {
 
         Path path = FileSystems.getDefault().getPath("assets", "fakeFile.json");
-        ArrayList<String> x = getQuotesData(path);
+        String x = getQuotesData(path);
 
     }
 
