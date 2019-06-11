@@ -22,28 +22,25 @@ public class App {
 
         Path path = FileSystems.getDefault().getPath("assets", "recentquotes.json");
 
-        ArrayList<String> jsonStrings = getQuotesData(path);
-        ArrayList<Quote> myQuotes = quotify(jsonStrings);
+        String jsonStrings = getQuotesData(path);
+        Quote[] myQuotes = quotify(jsonStrings);
 
-        System.out.println(myQuotes.get((int)(Math.random() * myQuotes.size() + 1)));
+        System.out.println(myQuotes[((int)(Math.random() * myQuotes.length + 1))]);
 
 
     }
 
-    public static ArrayList<Quote> quotify(ArrayList<String> quoteJSONString){
-        ArrayList<Quote>  quotes = new ArrayList<>();
+    public static Quote[] quotify(String quoteJSONString){
 
-        for(String string: quoteJSONString){
-            Gson gson = new GsonBuilder().serializeNulls().create();
-            Quote quoteFromJsonString = gson.fromJson(string, Quote.class );
-            quotes.add(quoteFromJsonString);
-        }
+        Gson gson = new GsonBuilder().serializeNulls().create();
+        Quote[] quotesFromJson = gson.fromJson(quoteJSONString, Quote[].class );
 
-        return quotes;
+
+        return quotesFromJson;
     }
 
 
-    public static ArrayList<String> getQuotesData(Path path) throws IOException {
+    public static String getQuotesData(Path path) throws IOException {
 
         BufferedReader reader = Files.newBufferedReader(path, StandardCharsets.UTF_8);
         String output = "";
@@ -53,22 +50,6 @@ public class App {
             stringBuilder.append(output);
         }
 
-        String[] objectArray = stringBuilder.toString().split("},",-1);
-        ArrayList<String> outputArray = new ArrayList<>();
-
-        for(String string: objectArray){
-            if(string.startsWith("[")){
-                string = string.substring(1);
-            }
-            if(string.endsWith("]")){
-                string = string.substring(1,string.length()-1);
-                outputArray.add(string);
-                continue;
-            }
-
-            outputArray.add(string+"}");
-        }
-
-        return outputArray;
+        return stringBuilder.toString();
     }
 }
