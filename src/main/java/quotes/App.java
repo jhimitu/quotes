@@ -8,6 +8,9 @@ import com.google.gson.GsonBuilder;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
@@ -20,12 +23,13 @@ public class App {
     public static void main(String[] args) throws IOException {
 
 
-        Path path = FileSystems.getDefault().getPath("assets", "recentquotes.json");
-
-        String jsonStrings = getQuotesData(path);
-        Quote[] myQuotes = quotify(jsonStrings);
-
-        System.out.println(myQuotes[((int)(Math.random() * myQuotes.length + 1))]);
+//        Path path = FileSystems.getDefault().getPath("assets", "recentquotes.json");
+//
+//        String jsonStrings = getQuotesData(path);
+//        Quote[] myQuotes = quotify(jsonStrings);
+//
+//        System.out.println(myQuotes[((int)(Math.random() * myQuotes.length + 1))]);
+        System.out.println(getQuotesFromAPI());
 
 
     }
@@ -51,5 +55,22 @@ public class App {
         }
 
         return stringBuilder.toString();
+    }
+
+    public static StarWarsQuote getQuotesFromAPI() throws IOException {
+        URL urlForAPI = new URL("http://swquotesapi.digitaljedi.dk/api/SWQuote/RandomStarWarsQuote");
+        HttpURLConnection connection = (HttpURLConnection) urlForAPI.openConnection();
+        BufferedReader reader = new BufferedReader(new InputStreamReader((connection.getInputStream())));
+        StringBuilder output = new StringBuilder();
+        String string = "";
+
+        while ((string = reader.readLine()) != null) {
+            output.append(string);
+        }
+
+        Gson gson = new GsonBuilder().serializeNulls().create();
+        StarWarsQuote starWarsQuote = gson.fromJson(output.toString(), StarWarsQuote.class);
+
+        return starWarsQuote;
     }
 }
