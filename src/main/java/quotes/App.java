@@ -23,12 +23,12 @@ public class App {
     public static void main(String[] args) throws IOException {
 
 
-//        Path path = FileSystems.getDefault().getPath("assets", "recentquotes.json");
-//
-//        String jsonStrings = getQuotesData(path);
-//        Quote[] myQuotes = quotify(jsonStrings);
-//
-//        System.out.println(myQuotes[((int)(Math.random() * myQuotes.length + 1))]);
+        Path path = FileSystems.getDefault().getPath("assets", "recentquotes.json");
+
+        String jsonStrings = getQuotesData(path);
+        Quote[] myQuotes = quotify(jsonStrings);
+
+        System.out.println(myQuotes[((int)(Math.random() * myQuotes.length + 1))]);
         System.out.println(getQuotesFromAPI());
 
 
