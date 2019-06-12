@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.io.BufferedReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -22,16 +23,16 @@ public class App {
 
     public static void main(String[] args) throws IOException {
 
+        try {
+            System.out.println(getQuotesFromAPI());
+        } catch (IOException err) {
+            Path path = FileSystems.getDefault().getPath("assets", "recentquotes.json");
 
-//        Path path = FileSystems.getDefault().getPath("assets", "recentquotes.json");
-//
-//        String jsonStrings = getQuotesData(path);
-//        Quote[] myQuotes = quotify(jsonStrings);
-//
-//        System.out.println(myQuotes[((int)(Math.random() * myQuotes.length + 1))]);
-        System.out.println(getQuotesFromAPI());
+            String jsonStrings = getQuotesData(path);
+            Quote[] myQuotes = quotify(jsonStrings);
 
-
+            System.out.println(myQuotes[((int)(Math.random() * myQuotes.length + 1))]);
+        }
     }
 
     public static Quote[] quotify(String quoteJSONString){
@@ -72,5 +73,9 @@ public class App {
         StarWarsQuote starWarsQuote = gson.fromJson(output.toString(), StarWarsQuote.class);
 
         return starWarsQuote;
+    }
+
+    public static void cacheQuote(String quoteToAdd, Path path) throws IOException {
+        //TODO: append quotes to json file
     }
 }
