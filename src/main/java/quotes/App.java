@@ -22,16 +22,16 @@ public class App {
 
     public static void main(String[] args) throws IOException {
 
+        try {
+            System.out.println(getQuotesFromAPI());
+        } catch (IOException err) {
+            Path path = FileSystems.getDefault().getPath("assets", "recentquotes.json");
 
-        Path path = FileSystems.getDefault().getPath("assets", "recentquotes.json");
+            String jsonStrings = getQuotesData(path);
+            Quote[] myQuotes = quotify(jsonStrings);
 
-        String jsonStrings = getQuotesData(path);
-        Quote[] myQuotes = quotify(jsonStrings);
-
-        System.out.println(myQuotes[((int)(Math.random() * myQuotes.length + 1))]);
-        System.out.println(getQuotesFromAPI());
-
-
+            System.out.println(myQuotes[((int)(Math.random() * myQuotes.length + 1))]);
+        }
     }
 
     public static Quote[] quotify(String quoteJSONString){
