@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.io.BufferedReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -72,5 +73,9 @@ public class App {
         StarWarsQuote starWarsQuote = gson.fromJson(output.toString(), StarWarsQuote.class);
 
         return starWarsQuote;
+    }
+
+    public static void cacheQuote(String quoteToAdd, Path path) throws IOException {
+        //TODO: append quotes to json file
     }
 }
