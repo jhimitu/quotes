@@ -5,18 +5,20 @@ package quotes;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonParser;
 
-import java.io.BufferedReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.Buffer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+
+import static java.nio.file.Files.newBufferedReader;
 
 public class App {
 
@@ -24,7 +26,10 @@ public class App {
     public static void main(String[] args) throws IOException {
 
         try {
-            System.out.println(getQuotesFromAPI());
+//            System.out.println(getQuotesFromAPI());
+            StarWarsQuote quote = getQuotesFromAPI();
+            Path path = FileSystems.getDefault().getPath("assets", "recentquotes.json");
+            cacheQuote(quote, path);
         } catch (IOException err) {
             Path path = FileSystems.getDefault().getPath("assets", "recentquotes.json");
 
@@ -47,7 +52,7 @@ public class App {
 
     public static String getQuotesData(Path path) throws IOException {
 
-        BufferedReader reader = Files.newBufferedReader(path, StandardCharsets.UTF_8);
+        BufferedReader reader = newBufferedReader(path, StandardCharsets.UTF_8);
         String output = "";
         StringBuilder stringBuilder = new StringBuilder();
 
@@ -75,7 +80,26 @@ public class App {
         return starWarsQuote;
     }
 
-    public static void cacheQuote(String quoteToAdd, Path path) throws IOException {
+    public static void cacheQuote(StarWarsQuote quoteToAdd, Path path) throws IOException {
         //TODO: append quotes to json file
+
+        // convert qoute object to JSON
+        Gson gson = new Gson();
+        String quoteJSON = gson.toJson(quoteToAdd);
+        // read the file and create a JSONarray
+        JsonParser parser = new JsonParser();
+        JsonArray jsonQuoteArray = (JsonArray) parser.parse(new FileReader(path.toString()));
+        // push object to JSONarray
+        jsonQuoteArray.add(quoteJSON);
+        // write back to the file
+        System.out.println("ta-da: " + jsonQuoteArray);
+        try {
+            FileWriter writer = new FileWriter(path.toString());
+            writer.write(jsonQuoteArray.);
+            writer.flush();
+            writer.close();
+        } catch (Exception e) {
+            System.out.println("Error saving quote");
+        }
     }
 }
