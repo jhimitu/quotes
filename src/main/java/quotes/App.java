@@ -81,19 +81,16 @@ public class App {
     }
 
     public static void cacheQuote(StarWarsQuote quoteToAdd, Path path) throws IOException {
-        //TODO: append quotes to json file
 
-        // convert quote object to JSON
-        Gson gson = new GsonBuilder().setPrettyPrinting().create(); //ensures formatting stays the same
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String quoteJSON = gson.toJson(quoteToAdd);
 
-        // read the file and create a JSONarray
         JsonParser parser = new JsonParser();
         JsonArray jsonQuoteArray = (JsonArray) parser.parse(new FileReader(path.toString()));
-        // push quote object to JSONarray
+
         jsonQuoteArray.add(parser.parse(quoteJSON));
         System.out.println("ta-da: " + gson.toJson(jsonQuoteArray));
-        // write back to the file
+
         try {
             FileWriter writer = new FileWriter(path.toString());
             writer.write(gson.toJson(jsonQuoteArray));
