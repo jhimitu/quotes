@@ -26,10 +26,12 @@ public class App {
     public static void main(String[] args) throws IOException {
 
         try {
-//            System.out.println(getQuotesFromAPI());
             StarWarsQuote quote = getQuotesFromAPI();
+            System.out.println(quote);
+
             Path path = FileSystems.getDefault().getPath("assets", "recentquotes.json");
             cacheQuote(quote, path);
+
         } catch (IOException err) {
             Path path = FileSystems.getDefault().getPath("assets", "recentquotes.json");
 
@@ -89,7 +91,6 @@ public class App {
         JsonArray jsonQuoteArray = (JsonArray) parser.parse(new FileReader(path.toString()));
 
         jsonQuoteArray.add(parser.parse(quoteJSON));
-        System.out.println("ta-da: " + gson.toJson(jsonQuoteArray));
 
         try {
             FileWriter writer = new FileWriter(path.toString());
